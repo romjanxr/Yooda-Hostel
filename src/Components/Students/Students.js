@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Col,
@@ -9,9 +10,22 @@ import {
 } from "react-bootstrap";
 
 const Students = () => {
-  const [students, setStudents] = useState({});
+  const [students, setStudents] = useState({ status: "Active" });
+  const [allStudents, setAllStudents] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/students")
+      .then(res => setAllStudents(res.data));
+  }, []);
+
   const handleSubmit = e => {
     e.preventDefault();
+    axios.post("http://localhost:5000/students", students).then(res => {
+      if (res.data.insertedId) {
+        setStudents({});
+      }
+    });
   };
 
   return (
@@ -109,9 +123,16 @@ const Students = () => {
             </Col>
             <Col sm={4} className="my-1">
               <InputGroup>
-                <Form.Select aria-label="Select Status">
-                  <option value="1">InActive</option>
-                  <option value="2">Active</option>
+                <Form.Select
+                  aria-label="Select Status"
+                  name="students[status]"
+                  value={students.status || ""}
+                  onChange={e =>
+                    setStudents({ ...students, status: e.target.value })
+                  }
+                >
+                  <option value="Active">Active</option>
+                  <option value="InActive">InActive</option>
                 </Form.Select>
               </InputGroup>
             </Col>
