@@ -8,6 +8,7 @@ import {
   InputGroup,
   Row,
 } from "react-bootstrap";
+import StudentShowcase from "./StudentShowcase";
 
 const Students = () => {
   const [students, setStudents] = useState({ status: "Active" });
@@ -16,7 +17,7 @@ const Students = () => {
   useEffect(() => {
     axios
       .get("http://localhost:5000/students")
-      .then(res => setAllStudents(res.data));
+      .then(res => setAllStudents(res.data.students));
   }, []);
 
   const handleSubmit = e => {
@@ -30,7 +31,7 @@ const Students = () => {
 
   return (
     <div className="container my-5">
-      <div>
+      <div className="mb-5">
         <Form onSubmit={handleSubmit}>
           <Row className="align-items-center">
             <Col sm={6} className="my-1">
@@ -142,6 +143,10 @@ const Students = () => {
           </Row>
         </Form>
       </div>
+      <StudentShowcase
+        allStudents={allStudents}
+        setAllStudents={setAllStudents}
+      />
     </div>
   );
 };

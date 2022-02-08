@@ -1,26 +1,118 @@
-import React from "react";
-import { Button, Table } from "react-bootstrap";
+import axios from "axios";
+import React, { useState } from "react";
+import { Button, Form, Table } from "react-bootstrap";
 
-const StudentShowcase = () => {
+const StudentShowcase = ({ allStudents, setAllStudents }) => {
+  const [checkedStudent, setCheckedStudent] = useState([]);
+
+  const handleCheckbox = (e, student) => {
+    const { checked, name } = e.target;
+    if (checked) {
+      if (name === "allSelect") {
+        setCheckedStudent(allStudents);
+      } else {
+        setCheckedStudent([...checkedStudent, student]);
+      }
+    } else {
+      if (name === "allSelect") {
+        setCheckedStudent([]);
+      } else {
+        const updatedStudent = checkedStudent.filter(
+          s => s._id !== student._id
+        );
+        setCheckedStudent(updatedStudent);
+      }
+    }
+  };
+
+  const handleStatus = e => {
+    const value = e.target.value;
+    if (value) {
+      checkedStudent.map(student =>
+        axios
+          .put("http://localhost:5000/students", {
+            status: value,
+            id: student._id,
+          })
+          .then(res => {
+            if (res.data.modifiedCount) {
+              const updatedStudent = allStudents.map(element => {
+                if (element._id === student._id) {
+                  element.status = value;
+                }
+                return element;
+              });
+              setAllStudents(updatedStudent);
+            }
+          })
+      );
+    }
+  };
   return (
     <div>
+      <div>
+        <Form.Select
+          required
+          className="status-width mb-3"
+          onChange={handleStatus}
+        >
+          <option value="">Change Status</option>
+          <option value="Active">Active</option>
+          <option value="InActive">InActive</option>
+        </Form.Select>
+      </div>
       <Table striped bordered hover responsive>
         <thead>
           <tr>
-            <th>#</th>
-            <th>Food Name</th>
-            <th>Food Price</th>
+            <th>
+              <Form.Check
+                type="checkbox"
+                name="allSelect"
+                checked={checkedStudent.length === allStudents.length}
+                onChange={handleCheckbox}
+              />
+            </th>
+            <th>Name</th>
+            <th>Roll</th>
+            <th>Age</th>
+            <th>Class</th>
+            <th>Hall</th>
+            <th>Status</th>
             <th>Edit</th>
             <th>Delete</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
+          {allStudents.map(student => (
+            <tr key={student._id}>
+              <td>
+                <Form.Check
+                  type="checkbox"
+                  name={student.name}
+                  checked={checkedStudent.some(
+                    element => element._id === student._id
+                  )}
+                  onChange={e => handleCheckbox(e, student)}
+                />
+              </td>
+              <td>{student.name}</td>
+              <td>{student.roll}</td>
+              <td>{student.age}</td>
+              <td>{student.class}</td>
+              <td>{student.hall}</td>
+              <td>{student.status}</td>
+              <td>
+                <Button variant="success" size="sm">
+                  Edit
+                </Button>
+              </td>
+              <td>
+                <Button variant="danger" size="sm">
+                  Delete
+                </Button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </Table>
       <div className="text-center">

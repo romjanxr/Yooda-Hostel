@@ -28,6 +28,16 @@
   color: #61dafb;
 }
 
+.status-width {
+  width: 20%;
+}
+
+@media only screen and (max-width: 576px) {
+  .status-width {
+    width: 100%;
+  }
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
