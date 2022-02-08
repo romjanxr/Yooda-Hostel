@@ -11,6 +11,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Foods />} />
+        <Route path="/foods" element={<Foods />} />
         <Route path="/students" element={<Students />} />
       </Routes>
     </div>

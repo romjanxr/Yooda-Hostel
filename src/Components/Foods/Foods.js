@@ -14,19 +14,26 @@ const Foods = () => {
   const [foods, setFoods] = useState({});
   const [foodsItem, setFoodsItem] = useState([]);
   const [dependency, setDependency] = useState("");
+  const [pageCount, setPageCount] = useState(0);
+  const [page, setPage] = useState(0);
+  const size = 10;
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/foods")
-      .then(res => setFoodsItem(res.data));
-  }, [dependency]);
-  console.log(foods);
+      .get(`http://localhost:5000/foods?page=${page}&&size=${size}`)
+      .then(res => {
+        setFoodsItem(res.data.foods);
+        const count = res.data.count;
+        const pageNumber = Math.ceil(count / 10);
+        setPageCount(pageNumber);
+      });
+  }, [dependency, page]);
 
   const handleSubmit = e => {
     e.preventDefault();
     axios.post("http://localhost:5000/foods", foods).then(res => {
       if (res.data.insertedId) {
-        alert("Food Added Successfully");
+        setFoods({});
         setDependency(Math.random());
       } else {
         alert("Something Went Wrong Please Try Again");
@@ -62,7 +69,7 @@ const Foods = () => {
                 <InputGroup.Text>$</InputGroup.Text>
                 <FormControl
                   required
-                  type="number"
+                  type="text"
                   id="price"
                   placeholder="Price"
                   name="foods[price]"
@@ -77,7 +84,13 @@ const Foods = () => {
           </Row>
         </Form>
       </div>
-      <FoodShowcase foodsItem={foodsItem} setDependency={setDependency} />
+      <FoodShowcase
+        pageCount={pageCount}
+        foodsItem={foodsItem}
+        setDependency={setDependency}
+        page={page}
+        setPage={setPage}
+      />
     </div>
   );
 };

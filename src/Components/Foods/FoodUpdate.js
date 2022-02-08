@@ -7,8 +7,6 @@ const FoodUpdate = ({ handleClose, show, food, setDependency }) => {
   const nameRef = useRef();
   const priceRef = useRef();
 
-  console.log(_id);
-
   const handleUpdate = e => {
     e.preventDefault();
     axios
