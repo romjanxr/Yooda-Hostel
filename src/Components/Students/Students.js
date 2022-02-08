@@ -13,18 +13,26 @@ import StudentShowcase from "./StudentShowcase";
 const Students = () => {
   const [students, setStudents] = useState({ status: "Active" });
   const [allStudents, setAllStudents] = useState([]);
+  const [dependency, setDependency] = useState("");
+  const [pageCount, setPageCount] = useState(0);
+  const [page, setPage] = useState(0);
+  const size = 10;
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/students")
-      .then(res => setAllStudents(res.data.students));
-  }, []);
+      .get(`http://localhost:5000/students?page=${page}&&size=${size}`)
+      .then(res => {
+        setAllStudents(res.data.students);
+        setPageCount(res.data.count);
+      });
+  }, [page, dependency]);
 
   const handleSubmit = e => {
     e.preventDefault();
     axios.post("http://localhost:5000/students", students).then(res => {
       if (res.data.insertedId) {
         setStudents({});
+        setDependency(Math.random());
       }
     });
   };
@@ -146,6 +154,10 @@ const Students = () => {
       <StudentShowcase
         allStudents={allStudents}
         setAllStudents={setAllStudents}
+        pageCount={pageCount}
+        setDependency={setDependency}
+        page={page}
+        setPage={setPage}
       />
     </div>
   );

@@ -1,9 +1,22 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Button, Form, Table } from "react-bootstrap";
+import StudentUpdate from "./StudentUpdate";
 
-const StudentShowcase = ({ allStudents, setAllStudents }) => {
+const StudentShowcase = ({
+  allStudents,
+  setAllStudents,
+  pageCount,
+  setDependency,
+  page,
+  setPage,
+}) => {
   const [checkedStudent, setCheckedStudent] = useState([]);
+  const [show, setShow] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState({});
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const handleCheckbox = (e, student) => {
     const { checked, name } = e.target;
@@ -48,14 +61,18 @@ const StudentShowcase = ({ allStudents, setAllStudents }) => {
       );
     }
   };
+
+  const handleDelete = id => {
+    axios.delete(`http://localhost:5000/students/${id}`).then(res => {
+      if (res.data.deletedCount) {
+        setDependency(Math.random());
+      }
+    });
+  };
   return (
     <div>
-      <div>
-        <Form.Select
-          required
-          className="status-width mb-3"
-          onChange={handleStatus}
-        >
+      <div className="status-width mb-3">
+        <Form.Select required onChange={handleStatus}>
           <option value="">Change Status</option>
           <option value="Active">Active</option>
           <option value="InActive">InActive</option>
@@ -100,14 +117,33 @@ const StudentShowcase = ({ allStudents, setAllStudents }) => {
               <td>{student.age}</td>
               <td>{student.class}</td>
               <td>{student.hall}</td>
-              <td>{student.status}</td>
+              <td
+                className={
+                  student.status === "Active" ? "text-success" : "text-danger"
+                }
+              >
+                {student.status}
+              </td>
               <td>
-                <Button variant="success" size="sm">
+                <Button
+                  variant="success"
+                  size="sm"
+                  onClick={() => {
+                    handleShow();
+                    setSelectedStudent(student);
+                  }}
+                >
                   Edit
                 </Button>
               </td>
               <td>
-                <Button variant="danger" size="sm">
+                <Button
+                  variant="danger"
+                  size="sm"
+                  onClick={() => {
+                    handleDelete(student._id);
+                  }}
+                >
                   Delete
                 </Button>
               </td>
@@ -130,6 +166,12 @@ const StudentShowcase = ({ allStudents, setAllStudents }) => {
           </button>
         ))} */}
       </div>
+      <StudentUpdate
+        student={selectedStudent}
+        handleClose={handleClose}
+        show={show}
+        setDependency={setDependency}
+      />
     </div>
   );
 };
