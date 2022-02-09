@@ -18,12 +18,16 @@ const Students = () => {
   const [page, setPage] = useState(0);
   const size = 10;
 
+  console.log(students);
+
   useEffect(() => {
     axios
       .get(`http://localhost:5000/students?page=${page}&&size=${size}`)
       .then(res => {
         setAllStudents(res.data.students);
-        setPageCount(res.data.count);
+        const count = res.data.count;
+        const pageNumber = Math.ceil(count / 10);
+        setPageCount(pageNumber);
       });
   }, [page, dependency]);
 
@@ -31,7 +35,7 @@ const Students = () => {
     e.preventDefault();
     axios.post("http://localhost:5000/students", students).then(res => {
       if (res.data.insertedId) {
-        setStudents({});
+        setStudents({ status: "Active" });
         setDependency(Math.random());
       }
     });

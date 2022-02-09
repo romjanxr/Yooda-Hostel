@@ -152,7 +152,7 @@ const StudentShowcase = ({
         </tbody>
       </Table>
       <div className="text-center">
-        {/* {[...Array(pageCount).keys()].map(n => (
+        {[...Array(pageCount).keys()].map(n => (
           <button
             className={
               n === page
@@ -164,7 +164,7 @@ const StudentShowcase = ({
           >
             {n + 1}
           </button>
-        ))} */}
+        ))}
       </div>
       <StudentUpdate
         student={selectedStudent}
