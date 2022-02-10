@@ -20,7 +20,9 @@ const Foods = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/foods?page=${page}&&size=${size}`)
+      .get(
+        `https://yooda-hostel-sv.herokuapp.com/foods?page=${page}&&size=${size}`
+      )
       .then(res => {
         setFoodsItem(res.data.foods);
         const count = res.data.count;
@@ -31,14 +33,16 @@ const Foods = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    axios.post("http://localhost:5000/foods", foods).then(res => {
-      if (res.data.insertedId) {
-        setFoods({});
-        setDependency(Math.random());
-      } else {
-        alert("Something Went Wrong Please Try Again");
-      }
-    });
+    axios
+      .post("https://yooda-hostel-sv.herokuapp.com/foods", foods)
+      .then(res => {
+        if (res.data.insertedId) {
+          setFoods({});
+          setDependency(Math.random());
+        } else {
+          alert("Something Went Wrong Please Try Again");
+        }
+      });
   };
 
   //

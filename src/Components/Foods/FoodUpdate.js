@@ -10,7 +10,7 @@ const FoodUpdate = ({ handleClose, show, food, setDependency }) => {
   const handleUpdate = e => {
     e.preventDefault();
     axios
-      .put(`http://localhost:5000/foods/${_id}`, {
+      .put(`https://yooda-hostel-sv.herokuapp.com/foods/${_id}`, {
         name: nameRef.current.value,
         price: priceRef.current.value,
       })

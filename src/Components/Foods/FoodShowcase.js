@@ -17,11 +17,13 @@ const FoodShowcase = ({
   const handleShow = () => setShow(true);
 
   const handleDelete = id => {
-    axios.delete(`http://localhost:5000/foods/${id}`).then(res => {
-      if (res.data.deletedCount) {
-        setDependency(Math.random());
-      }
-    });
+    axios
+      .delete(`https://yooda-hostel-sv.herokuapp.com/foods/${id}`)
+      .then(res => {
+        if (res.data.deletedCount) {
+          setDependency(Math.random());
+        }
+      });
   };
   return (
     <div>

@@ -22,19 +22,19 @@ const Distribution = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/students`)
+      .get(`https://yooda-hostel-sv.herokuapp.com/students`)
       .then(res => setStudents(res.data.students));
   }, []);
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/foods")
+      .get("https://yooda-hostel-sv.herokuapp.com/foods")
       .then(res => setFoods(res.data.foods));
   }, []);
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/served")
+      .get("https://yooda-hostel-sv.herokuapp.com/served")
       .then(res => setServedFood(res.data));
   }, [dependency]);
 
@@ -67,12 +67,14 @@ const Distribution = () => {
     );
     if (!found) {
       distributeData.status = "Served";
-      axios.post("http://localhost:5000/served", distributeData).then(res => {
-        if (res.data.insertedId) {
-          setDependency(Math.random());
-          setDuplicate(false);
-        }
-      });
+      axios
+        .post("https://yooda-hostel-sv.herokuapp.com/served", distributeData)
+        .then(res => {
+          if (res.data.insertedId) {
+            setDependency(Math.random());
+            setDuplicate(false);
+          }
+        });
     } else {
       setDuplicate(true);
     }

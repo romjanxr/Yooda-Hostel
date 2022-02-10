@@ -13,7 +13,7 @@ const StudentUpdate = ({ handleClose, show, student, setDependency }) => {
   const handleUpdate = e => {
     e.preventDefault();
     axios
-      .put(`http://localhost:5000/studentProfile/${_id}`, {
+      .put(`https://yooda-hostel-sv.herokuapp.com/studentProfile/${_id}`, {
         name: nameRef.current.value,
         roll: rollRef.current.value,
         age: ageRef.current.value,

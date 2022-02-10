@@ -43,7 +43,7 @@ const StudentShowcase = ({
     if (value) {
       checkedStudent.map(student =>
         axios
-          .put("http://localhost:5000/students", {
+          .put("https://yooda-hostel-sv.herokuapp.com/students", {
             status: value,
             id: student._id,
           })
@@ -63,11 +63,13 @@ const StudentShowcase = ({
   };
 
   const handleDelete = id => {
-    axios.delete(`http://localhost:5000/students/${id}`).then(res => {
-      if (res.data.deletedCount) {
-        setDependency(Math.random());
-      }
-    });
+    axios
+      .delete(`https://yooda-hostel-sv.herokuapp.com/students/${id}`)
+      .then(res => {
+        if (res.data.deletedCount) {
+          setDependency(Math.random());
+        }
+      });
   };
   return (
     <div>

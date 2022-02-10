@@ -20,7 +20,9 @@ const Students = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/students?page=${page}&&size=${size}`)
+      .get(
+        `https://yooda-hostel-sv.herokuapp.com/students?page=${page}&&size=${size}`
+      )
       .then(res => {
         setAllStudents(res.data.students);
         const count = res.data.count;
@@ -31,12 +33,14 @@ const Students = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    axios.post("http://localhost:5000/students", students).then(res => {
-      if (res.data.insertedId) {
-        setStudents({ status: "Active" });
-        setDependency(Math.random());
-      }
-    });
+    axios
+      .post("https://yooda-hostel-sv.herokuapp.com/students", students)
+      .then(res => {
+        if (res.data.insertedId) {
+          setStudents({ status: "Active" });
+          setDependency(Math.random());
+        }
+      });
   };
 
   return (
