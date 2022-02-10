@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
 import Select from "react-select";
 import ServedShowcase from "./ServedShowcase";
@@ -19,9 +19,6 @@ const Distribution = () => {
   const [servedFood, setServedFood] = useState([]);
   const [dependency, setDependency] = useState("");
   const [duplicate, setDuplicate] = useState(false);
-  const studentRef = useRef();
-  const foodRef = useRef();
-  const shiftRef = useRef();
 
   useEffect(() => {
     axios
@@ -74,7 +71,6 @@ const Distribution = () => {
         if (res.data.insertedId) {
           setDependency(Math.random());
           setDuplicate(false);
-          clearInput();
         }
       });
     } else {
@@ -82,18 +78,11 @@ const Distribution = () => {
     }
   };
 
-  const clearInput = () => {
-    console.log(studentRef.current.select);
-    // shiftRef.current.select.clearValue();
-    // foodRef.current.select.select.clearValue();
-  };
-
   return (
     <div className="container my-5">
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="student">
           <Select
-            ref={studentRef}
             options={studentData}
             onChange={opt => {
               setDistributeData({
@@ -107,7 +96,6 @@ const Distribution = () => {
 
         <Form.Group className="mb-3" controlId="shift">
           <Form.Select
-            ref={shiftRef}
             aria-label="shift"
             onChange={e =>
               setDistributeData({ ...distributeData, shift: e.target.value })
@@ -131,7 +119,6 @@ const Distribution = () => {
         </Form.Group>
         <Form.Group className="mb-3" controlId="shift">
           <Select
-            ref={foodRef}
             options={foodData}
             isMulti
             onChange={opt => setSelectedFood(opt)}

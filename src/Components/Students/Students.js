@@ -18,8 +18,6 @@ const Students = () => {
   const [page, setPage] = useState(0);
   const size = 10;
 
-  console.log(students);
-
   useEffect(() => {
     axios
       .get(`http://localhost:5000/students?page=${page}&&size=${size}`)
