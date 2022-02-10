@@ -44,7 +44,7 @@ const FoodUpdate = ({ handleClose, show, food, setDependency }) => {
           <Form.Group className="mb-3" controlId="foodPrice">
             <Form.Label>Food Price</Form.Label>
             <Form.Control
-              type="number"
+              type="text"
               placeholder="Price"
               defaultValue={price}
               ref={priceRef}
